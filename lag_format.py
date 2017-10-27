@@ -1,5 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
 import sys
 import argparse
+from subprocess import call
 
 parser = argparse.ArgumentParser(description='Konvertere tekstfil til SAS format-fil')
 
@@ -17,19 +22,16 @@ parser.add_argument('--delim', dest = 'delim',
                     default = '',
                     help = 'Mellomrom mellom ord i inputfil (standard er mellomrom)')
 
-
 args = parser.parse_args()
-
 
 filename = args.innfil
 alle = args.behold
 utfil = args.utfil
 
-
 infile = open(filename,"r")
 
-print("proc format;")
-print("value $"+filename.split(".")[0]+"F")
+utTekst = "proc format;\n"
+utTekst += "value $"+filename.split(".")[0]+"F\n"
 
 k = 0
 for i in infile.readlines():
@@ -44,14 +46,26 @@ for i in infile.readlines():
             text = linje.rstrip()
         else:
             text = " ".join(words[1:]).rstrip()
-        newline = "'"+words[0].replace(" ", "")+"'"+'="'+text.replace('"',"'")+'"'
-        print(newline)
+        newline = "'"+words[0].replace(" ", "")+"'"+'="'+text.replace('"',"'")+'"\n'
+        utTekst += newline
     except:
         sys.stderr.write(i)
 
 infile.close()
 
-print(";")
-print("run;")
+utTekst += '''
+;
+run
+'''
 
+#utTekst = utTekst.encode("cp1252")
+
+utfil = open(args.utfil, "w", encoding='cp1252')#, newline='\r\n')
+utfil.write(utTekst)
+utfil.close()
+
+
+#call(["iconv","-f","utf-8","-t","cp1252","--unicode-subst=''",args.utfil,">","tmp"], shell=True)
+#call(["mv","tmp",args.utfil])
+#call(["rm","tmp"])
 
