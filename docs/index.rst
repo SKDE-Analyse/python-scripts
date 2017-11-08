@@ -10,6 +10,7 @@ Dokumentasjon av SKDE sine python scripts
    :maxdepth: 2
    :caption: Contents:
    
+   code
 
 Indices and tables
 ==================
@@ -18,9 +19,3 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-
-lag_format.py
-=============
-
-.. automodule::lag_format
-    :members:
