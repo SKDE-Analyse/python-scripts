@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/SKDE-Analyse/python-scripts.svg?branch=master)](https://travis-ci.org/SKDE-Analyse/python-scripts/builds)
+[![PEP8 Status](https://travis-ci.org/SKDE-Analyse/python-scripts.svg?branch=master)](https://travis-ci.org/SKDE-Analyse/python-scripts/builds)
 
 # Samling med python script, SKDE
 
