@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-def lagFormat():
+def lag_format():
     """Script for å lage sas-format-filer ut fra csv-fil TEST"""
 
     import sys
