@@ -40,23 +40,39 @@ python legg_til_nye_formater.py --original <originalfil> --ny <nye formater> --u
     for i in org_linjer[2:]:
         gml_verdi.append(i.split("=")[0])
 
-    innhold = "/*Nye formater fra fil {fil} lagt til {dato} */\n".format(fil=args.nyfil, dato=time.strftime("%d/%m/%Y"))
+    nytt_innhold_dato = "/*Nye formater fra fil {fil} lagt til {dato} */\n".format(fil=args.nyfil, dato=time.strftime("%d/%m/%Y"))
+    nytt_innhold = ""
     for i in nye_linjer[2:]:
         ny_verdi = i.split("=")
         try:
-            if (ny_verdi[0] not in gml_verdi) and (ny_verdi[1].strip() != '""'):
-                innhold += i
+            if (ny_verdi[0] not in gml_verdi) and (ny_verdi[1].strip() != '""') and (ny_verdi[1].strip() != ny_verdi[0].replace("'", '"')):
+                nytt_innhold += i
         except IndexError:
             pass
 
-    if (args.ut):
-        ut = open(args.ut, "w")
-        ut.write(innhold)
-        ut.close()
-    else:
-        original = open(args.original, "a")
-        original.write(innhold)
-        original.close()
+    if nytt_innhold != "":
+
+        if (args.ut):
+            # Legg nye koder inn i egen fil
+            ut = open(args.ut, "w")
+            ut.write(nytt_innhold_dato + nytt_innhold)
+            ut.close()
+        else:
+            # Legg til nye koder i gammel fil
+            innhold = ""
+            for i in org_linjer[0:2]:
+                innhold += i
+            for i in org_linjer[2:]:
+                if i.strip() not in [";", "run;"]:
+                    innhold += i
+            innhold += nytt_innhold_dato + nytt_innhold
+            innhold += """
+;
+run;
+"""
+            original = open(args.original, "w")
+            original.write(innhold)
+            original.close()
 
 
 if __name__ == '__main__':
