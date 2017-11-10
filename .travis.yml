@@ -2,15 +2,14 @@ language:
   - python
 
 python:
-  - 2.7
   - 3.6
 
 install:
   - pip install -r requirements.txt
 
 script:
-  - pycodestyle --ignore=E501 lag_format.py
-  - pycodestyle --ignore=E501 legg_til_nye_formater.py
+  - pycodestyle --ignore=E501 skde/lag_format.py
+  - pycodestyle --ignore=E501 skde/legg_til_nye_formater.py
 
 notifications:
   email: false
