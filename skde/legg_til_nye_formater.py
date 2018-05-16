@@ -40,8 +40,6 @@ python legg_til_nye_formater.py --original <originalfil> --ny <nye formater> --u
     org_linjer = original.readlines()
     nye_linjer = nye.readlines()
 
-
-
     original.close()
     nye.close()
 
@@ -65,7 +63,7 @@ python legg_til_nye_formater.py --original <originalfil> --ny <nye formater> --u
         innhold = ""
         for i in org_linjer[0:2]:
             if args.value and i.split()[0].lower() == "value":
-                i = i.replace(i.split()[1],args.value)
+                i = i.replace(i.split()[1], args.value)
             innhold += i
         for i in org_linjer[2:]:
             if i.strip() not in [";", "run;", "run"]:
@@ -80,6 +78,7 @@ run;
             # Legg koder inn i egen fil
             ut = codecs.open(args.ut, "w", "Windows-1252")
         else:
+            # Legg koder til original-fil
             ut = codecs.open(args.original, "w", org_encoding)
 
         ut.write(innhold)
@@ -94,16 +93,18 @@ def get_encoding(filename):
     detector.reset()
     for line in open(filename, 'rb').readlines():
         detector.feed(line)
-        if detector.done: break
+        if detector.done:
+            break
     detector.close()
-    print("Encoding for file {file} found to be {encode}, with confidence {confidence}.".format(file=filename, encode=detector.result["encoding"], confidence=detector.result["confidence"]))
-#    print(detector.result)
+
+    encoding = detector.result["encoding"]
     if detector.result["encoding"] in [None, "ascii"]:
-        return("Windows-1252")
+        encoding = "Windows-1252"
     elif detector.result["encoding"] == "ISO-8859-1":
-        return("latin-1")
-    else:
-        return(detector.result["encoding"])
+        encoding = "latin-1"
+
+    print("Encoding for file {file} found to be {encode}, with confidence {confidence}. Encoding {rtrn} returned.".format(file=filename, encode=detector.result["encoding"], confidence=detector.result["confidence"], rtrn=encoding))
+    return(encoding)
 
 
 if __name__ == '__main__':
