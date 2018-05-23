@@ -43,18 +43,19 @@ def extractDoc(filename):
     return(doc)
 
 
-def findSASfiles(folder):
+def findSASfiles(folders):
     import os
     SASfiles = []
-    for fn in os.listdir(folder):
-        readFile = False
-        if fn.endswith(".sas"):
-            readFile = True
-        else:
+    for i in folders:
+        for fn in os.listdir(i):
             readFile = False
+            if fn.endswith(".sas"):
+                readFile = True
+            else:
+                readFile = False
 
-        if readFile:
-            SASfiles.append(fn)
+            if readFile:
+                SASfiles.append(i + "/" + fn)
 
     return(SASfiles)
 
@@ -72,8 +73,7 @@ def main():
     if len(folders) == 0:
         folders = ["."]
 
-    for i in folders:
-        listofMacros = findSASfiles(i)
+    listofMacros = findSASfiles(folders)
 
     docFolder = "./docs/"
     try:
@@ -102,8 +102,9 @@ def main():
         filename = i.split("/")[-1]
         if doc != "":
             # Add link in index file
-            index += "- [{0}]({1})\n".format(filename, filename.split(".")[0])
-            docFile = codecs.open(docFolder + filename.split(".")[0] + ".md", "w", "utf-8")
+            mdfile = filename.split(".")[0] + ".md"
+            index += "- [{0}]({1})\n".format(i, mdfile.split(".")[0])
+            docFile = codecs.open(docFolder + mdfile, "w", "utf-8")
             docFile.write(heading + doc)
             docFile.close()
         else:
@@ -117,7 +118,7 @@ def main():
 
     indexHeading += '''
 
-## Linker til dokumentasjon av de ulike makroene
+## Linker til dokumentasjon av de ulike filene
 
 '''
 
