@@ -111,9 +111,9 @@ def main():
             warnings.warn("ADVARSEL: Filen {0} er ikke dokumentert!".format(filename))
             index += "- Filen {} er ikke dokumentert.\n".format(filename)
 
-    # Start the index page from the README file
+    # Start the index page from the docs/preindex.md file
     indexHeading = ""
-    for i in open("./README.md", "r").readlines():
+    for i in open("./docs/preindex.md", "r").readlines():
         indexHeading += i
 
     indexHeading += '''
